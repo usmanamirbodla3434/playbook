@@ -1,0 +1,18 @@
+---
+
+- hosts: servers
+  remote_user: ansible
+  become: yes
+  connection: ssh
+  tasks:
+      - name: install sendmail
+        yum:
+          name: sendmail
+          state: present
+        notify: restarted
+  handlers:
+        - name: restarted
+          service:
+            name: sendmail
+            state: restarted
+  
