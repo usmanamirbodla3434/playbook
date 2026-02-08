@@ -1,18 +1,15 @@
 ---
-
 - hosts: servers
-  remote_user: ansible
   become: yes
-  connection: ssh
   tasks:
-      - name: install sendmail
-        yum:
-          name: sendmail
-          state: present
-        notify: restarted
-  handlers:
-        - name: restarted
-          service:
-            name: sendmail
-            state: restarted
-  
+    - name: Install httpd
+      yum:
+        name: httpd
+        state: present
+
+    - name: Start and enable httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
