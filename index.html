@@ -2,52 +2,91 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Production Environment | Live</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Build | PROD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { 
-            /* Ye image aapko wo black/tech look degi */
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
-                        url('https://images.unsplash.com/photo-1558494949-ef010cbdcc48?q=80&w=2000'); 
-            background-size: cover;
-            background-position: center;
+        body {
+            background: radial-gradient(circle at center, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             height: 100vh;
-            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #00ff00; /* Terminal Green */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            overflow: hidden;
         }
-        .container {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px); /* Glass effect */
+
+        /* Glassmorphism Effect */
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 15px;
+            border-radius: 24px;
+            padding: 50px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             text-align: center;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
-        .metadata {
+
+        .status-badge {
+            background: linear-gradient(45deg, #00b09b, #96c93d);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(150, 201, 61, 0.4);
+            font-size: 0.9rem;
+        }
+
+        .metadata-container {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 30px 0;
             text-align: left;
-            background: rgba(0,0,0,0.5);
-            padding: 20px;
-            border-radius: 8px;
-            color: white;
-            font-family: monospace;
-            border-left: 4px solid #00ff00;
+            border-left: 5px solid #4ecca3;
         }
+
+        .label { color: #4ecca3; font-weight: bold; font-family: 'Courier New', monospace; font-size: 0.85rem; }
+        .value { color: #eeeeee; font-family: 'Courier New', monospace; margin-bottom: 12px; }
+
+        .footer-text { font-size: 0.75rem; color: rgba(255, 255, 255, 0.4); margin-top: 20px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Application Live</h1>
-        <div class="metadata">
-            <p>BUILD ID: <span style="color:#00ff00;">#105</span></p>
-            <p>ENVIRONMENT: PRODUCTION</p>
-            <p>COMMIT: 8a33281</p>
-            <p>STATUS: HEALTHY</p>
-        </div>
-        <p style="color:#888; font-size: 12px; margin-top: 20px;">Powered by Jenkins & Ansible</p>
+
+<div class="dashboard-card">
+    <div class="d-flex justify-content-center mb-4">
+        <span class="status-badge">APPLICATION LIVE</span>
     </div>
+    
+    <h1 class="display-6 fw-bold mb-2">Production Manifest</h1>
+    <p class="text-white-50 small mb-4">Node: {{ inventory_hostname }} | Auto-Provisioned via Ansible</p>
+
+    <div class="metadata-container shadow-inner">
+        <div class="row">
+            <div class="col-5 label">BUILD ID:</div>
+            <div class="col-7 value">#{{ build_id | default('105') }}</div>
+            
+            <div class="col-5 label">ENVIRONMENT:</div>
+            <div class="col-7 value">PRODUCTION-CLUSTER</div>
+            
+            <div class="col-5 label">GIT HASH:</div>
+            <div class="col-7 value text-info">{{ git_sha[:7] | default('8a33281') }}</div>
+            
+            <div class="col-5 label">TIMESTAMP:</div>
+            <div class="col-7 value">{{ ansible_date_time.time | default('01:16:58') }}</div>
+        </div>
+    </div>
+
+    <div class="footer-text">
+        Managed by CI/CD Pipeline v5.0 | Powered by Jenkins & Ansible
+    </div>
+</div>
+
 </body>
 </html>
